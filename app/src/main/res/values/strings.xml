@@ -9,4 +9,10 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="spinner_hint">Sélectionnez un rôle</string>
+    <string-array name="spinner_options_array">
+        <item>Candidat</item>
+        <item>Employeur</item>
+        <item>Anonyme</item>
+    </string-array>
 </resources>
