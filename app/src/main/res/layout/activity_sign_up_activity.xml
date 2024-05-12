@@ -40,20 +40,6 @@
                 android:textStyle="bold"
                 android:textColor="@color/purple"/>
 
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/username"
-                android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/ic_baseline_person_24"
-                android:drawablePadding="8dp"
-                android:hint="Username"
-                android:textColorHint="@color/purple"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="20dp"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -88,7 +74,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/loginButton"
+                android:id="@+id/inscrire"
                 android:text="Inscrire"
                 android:textSize="18sp"
                 android:layout_marginTop="30dp"

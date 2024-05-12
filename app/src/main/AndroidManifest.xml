@@ -13,7 +13,16 @@
         android:theme="@style/Theme.Intérims"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivityAnonymes"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivityEmployeur"
+            android:exported="false" />
+        <activity
+            android:name=".InscriptionCandidat"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivityCandidat"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity"

@@ -18,6 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText password;
     Button loginButton;
     Spinner spinner;
+    String selectedOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedOption = (String) parent.getItemAtPosition(position);
+                selectedOption = (String) parent.getItemAtPosition(position);
                 if (selectedOption.equals("Anonyme")) {
                     username.setEnabled(false);
                     password.setEnabled(false);
@@ -64,14 +65,33 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (username.isEnabled() && password.isEnabled() && username.getText().toString().equals("user") && password.getText().toString().equals("1234")) {
+                if (username.isEnabled() && password.isEnabled() && username.getText().toString().equals("kawthar") && password.getText().toString().equals("kawthar")) {
                     Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    if (selectedOption.equals("Anonyme")) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivityAnonymes.class);
+                        startActivity(intent);
+                    } else if(selectedOption.equals("Candidat")){
+                        Intent intent = new Intent(LoginActivity.this, MainActivityCandidat.class);
+                        startActivity(intent);
+                    } else if(selectedOption.equals("Employeur")){
+                        Intent intent = new Intent(LoginActivity.this, MainActivityEmployeur.class);
+                        startActivity(intent);
+                    }
+
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    if (selectedOption.equals("Anonyme")) {
+                        Toast.makeText(LoginActivity.this, selectedOption, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivityAnonymes.class);
+                        startActivity(intent);
+                    } else if(selectedOption.equals("Candidat")){
+                        Toast.makeText(LoginActivity.this, selectedOption, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivityCandidat.class);
+                        startActivity(intent);
+                    } else if(selectedOption.equals("Employeur")){
+                        Toast.makeText(LoginActivity.this, selectedOption, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivityEmployeur.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });

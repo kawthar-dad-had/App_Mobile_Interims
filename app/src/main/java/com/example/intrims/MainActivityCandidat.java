@@ -13,16 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.intrims.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityCandidat extends AppCompatActivity {
 
     ActivityMainBinding binding; // Declare binding variable
 
@@ -42,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.profil) {
                 replaceFragment(new ProfilFragment());
 
+            }else if (item.getItemId() == R.id.candidature) {
+                replaceFragment(new CandidatureFragment());
+
             }
 
             return true;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout, fragment)
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this, "Upload a Video is clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivityCandidat.this, "Upload a Video is clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this, "Create a short is Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivityCandidat.this, "Create a short is Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this, "Go live is Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivityCandidat.this, "Go live is Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 

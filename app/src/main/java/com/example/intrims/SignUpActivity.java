@@ -3,6 +3,7 @@ package com.example.intrims;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +21,17 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_activity);
 
         TextView login = findViewById(R.id.signupText);
+        Button inscrire = findViewById(R.id.inscrire);
+
+        inscrire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Ajoutez ici le code que vous souhaitez exécuter lorsque "SignUp Now" est cliqué
+                // Par exemple, vous pouvez lancer une nouvelle activité pour l'inscription
+                Intent intent = new Intent(SignUpActivity.this, InscriptionCandidat.class);
+                startActivity(intent);
+            }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
