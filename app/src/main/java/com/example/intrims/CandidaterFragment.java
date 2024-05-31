@@ -1,64 +1,119 @@
 package com.example.intrims;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CandidaterFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.fragment.app.Fragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CandidaterFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CandidaterFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CandidaterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CandidaterFragment newInstance(String param1, String param2) {
-        CandidaterFragment fragment = new CandidaterFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private EditText editTextNom;
+    private EditText editTextPrenom;
+    private EditText editTextEmail;
+    private EditText editTextDateNaissance;
+    private EditText editTextVille;
+    private EditText editTextNationalite;
+    private EditText editTextPhone;
+    private Button btnCandidater;
+    private DatabaseHelper databaseHelper;
+    String titre;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_candidater, container, false);
+
+        editTextNom = view.findViewById(R.id.nom);
+        editTextPrenom = view.findViewById(R.id.prenom);
+        editTextEmail = view.findViewById(R.id.email);
+        editTextDateNaissance = view.findViewById(R.id.date);
+        editTextVille = view.findViewById(R.id.ville);
+        editTextNationalite = view.findViewById(R.id.nationalite);
+        editTextPhone = view.findViewById(R.id.phone);
+        btnCandidater = view.findViewById(R.id.btn_candidater);
+        TextView titreText = view.findViewById(R.id.titre);
+        TextView sousText = view.findViewById(R.id.soustitre);
+        TextView descriptionText = view.findViewById(R.id.description);
+        TextView entrepriseText = view.findViewById(R.id.ent);
+        TextView dateText = view.findViewById(R.id.datePublication);
+
+
+
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            titre = bundle.getString("titre");
+            String soustitre = bundle.getString("soustitre");
+            String entreprise = bundle.getString("entreprise");
+            String date = bundle.getString("date");
+            String description = bundle.getString("description");
+
+            // Utilisez ces informations pour remplir les champs de texte
+            titreText.setText(titre);
+            sousText.setText(soustitre);
+            descriptionText.setText(description);
+            entrepriseText.setText(entreprise);
+            dateText.setText(date);
+
         }
-    }
+        databaseHelper = new DatabaseHelper(getContext());
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_candidater, container, false);
+        // Récupérer les informations du candidat connecté
+        Candidat candidat = databaseHelper.getCandidatByEmail(LoginActivity.email);
+
+        // Afficher les informations du candidat dans les champs de texte
+        if (candidat != null) {
+            editTextNom.setText(candidat.getNom());
+            editTextPrenom.setText(candidat.getPrenom());
+            editTextEmail.setText(candidat.getEmail());
+            editTextDateNaissance.setText(candidat.getDateNaissance());
+            editTextVille.setText(candidat.getVille());
+            editTextNationalite.setText(candidat.getNationalite());
+            editTextPhone.setText(candidat.getPhone());
+        }
+
+        // Ajouter un OnClickListener pour le bouton Candidater
+        btnCandidater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Récupérer les données du formulaire
+                String nomOffre = titre ;// Remplacez ceci par la valeur de votre choix
+                String etatCandidature = "En attente"; // État initial de la candidature
+                Date dateActuelle = new Date();
+                // Formater la date selon vos besoins
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String dateFormatee = dateFormat.format(dateActuelle);
+
+                // Insérer la candidature dans la base de données
+                boolean candidatureInserted = databaseHelper.insertCandidature(LoginActivity.email, nomOffre, etatCandidature);
+
+                // Vérifier si l'insertion a réussi
+                if (candidatureInserted) {
+
+                    boolean notificationInserted = databaseHelper.insertNotificationWithEmployeeEmail(nomOffre, dateFormatee, "Une nouvelle candidature a été enregistrée. Veuillez examiner cette candidature." + titre, LoginActivity.email);
+                    if (notificationInserted) {
+                        Toast.makeText(getContext(), "Candidature enregistrée avec succès", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Échec de l'ajout de la notification", Toast.LENGTH_SHORT).show();
+                    }
+
+                    MainActivityCandidat activity = (MainActivityCandidat) requireActivity();
+                    activity.replaceFragment(new CandidatureFragment());
+                    Toast.makeText(getContext(), "Candidature enregistrée avec succès", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Échec de l'enregistrement de la candidature", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        return view;
     }
 }

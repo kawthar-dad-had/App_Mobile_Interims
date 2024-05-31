@@ -41,6 +41,9 @@ public class MainActivityCandidat extends AppCompatActivity {
             }else if (item.getItemId() == R.id.candidature) {
                 replaceFragment(new CandidatureFragment());
 
+            }else if (item.getItemId() == R.id.favoris) {
+                replaceFragment(new FavoriFragment());
+
             }
 
             return true;
@@ -53,6 +56,7 @@ public class MainActivityCandidat extends AppCompatActivity {
             }
         });
     }
+
 
     public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()

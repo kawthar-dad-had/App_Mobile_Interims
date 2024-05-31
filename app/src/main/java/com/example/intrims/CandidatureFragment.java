@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 
@@ -24,8 +25,9 @@ public class CandidatureFragment extends Fragment implements SearchView.OnQueryT
     private List<Candidature> candidatures;
     private SearchView searchView;
     private Chip chip;
+    private DatabaseHelper databaseHelper;
 
-
+    List<Candidature> candidaturesWithOffres;
     public CandidatureFragment() {
         // Required empty public constructor
     }
@@ -48,12 +50,16 @@ public class CandidatureFragment extends Fragment implements SearchView.OnQueryT
         recyclerView.addItemDecoration(new SpaceItemDecoration(spaceInPixels));
 
         candidatures = new ArrayList<>();
-        candidatures.add(new Candidature("Développeur Android", "Entreprise XYZ", "Nous recherchons un développeur Android qualifié pour rejoindre notre équipe."));
-        candidatures.add(new Candidature("Ingénieur DevOps", "Entreprise ABC", "Nous recherchons un ingénieur DevOps pour maintenir nos infrastructures et automatiser nos processus."));
-        candidatures.add(new Candidature("Développeur Web Frontend", "Startup XYZ", "Nous recherchons un développeur web frontend pour travailler sur nos projets clients."));
+        candidatures.add(new Candidature("Développeur Android", "Entreprise XYZ", "Nous recherchons un développeur Android qualifié pour rejoindre notre équipe.","27/05/2024","Montpellier","Accepté"));
+        candidatures.add(new Candidature("Ingénieur DevOps", "Entreprise ABC", "Nous recherchons un ingénieur DevOps pour maintenir nos infrastructures et automatiser nos processus.","20/05/2024","Paris", "En attente"));
+        candidatures.add(new Candidature("Développeur Web Frontend", "Startup XYZ", "Nous recherchons un développeur web frontend pour travailler sur nos projets clients.","01/05/2024","Toulouse", "Refusé"));
+        databaseHelper = new DatabaseHelper(getContext());
+        candidaturesWithOffres = databaseHelper.getCandidaturesByEmailWithOffres(LoginActivity.email);
+        Toast.makeText(getContext(), candidaturesWithOffres.get(0).getEtat(), Toast.LENGTH_SHORT).show();
 
-        candidatureAdapter = new CandidatureAdapter(candidatures);
-        chip.setText(String.format("%d Résultats", candidatures.size()));
+
+        candidatureAdapter = new CandidatureAdapter(candidaturesWithOffres);
+        chip.setText(String.format("%d Résultats", candidaturesWithOffres.size()));
 
         recyclerView.setAdapter(candidatureAdapter);
 
@@ -69,12 +75,13 @@ public class CandidatureFragment extends Fragment implements SearchView.OnQueryT
         return false;
     }
 
+    @Override
     public boolean onQueryTextChange(String newText) {
         String userInput = newText.toLowerCase();
         List<Candidature> newList = new ArrayList<>();
 
-        for (Candidature candidature : candidatures) {
-            if (candidature.getTitle().toLowerCase().contains(userInput) || candidature.getCompany().toLowerCase().contains(userInput)) {
+        for (Candidature candidature : candidaturesWithOffres) {
+            if (candidature.getTitle().toLowerCase().contains(userInput) || candidature.getCompany().toLowerCase().contains(userInput) || candidature.getEtat().toLowerCase().contains(userInput)) {
                 newList.add(candidature);
             }
         }
@@ -84,4 +91,5 @@ public class CandidatureFragment extends Fragment implements SearchView.OnQueryT
 
         return true;
     }
+
 }

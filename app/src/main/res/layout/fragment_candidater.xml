@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/soustitre"
+            android:id="@+id/ent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -35,6 +35,32 @@
             app:layout_constraintHorizontal_bias="0.068"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titre" />
+        <TextView
+            android:id="@+id/soustitre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textColorHint="@color/gray"
+            android:text="Entreprise"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.068"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ent" />
+
+        <TextView
+            android:id="@+id/datePublication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColorHint="@color/gray"
+            android:text="Date de publication"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.068"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/soustitre" />
+
 
         <TextView
             android:id="@+id/description"
@@ -45,7 +71,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.079"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/soustitre" />
+            app:layout_constraintTop_toBottomOf="@+id/datePublication" />
 
         <EditText
             android:id="@+id/nom"
@@ -95,27 +121,102 @@
             android:padding="8dp"
             android:textColor="@color/black"
             android:layout_marginTop="20dp"
+            android:textColorHint="@color/purple"
+            app:layout_constraintBottom_toTopOf="@+id/date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prenom" />
+
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_edittext"
+            android:drawableLeft="@drawable/baseline_email_24"
+            android:drawablePadding="8dp"
+            android:hint="Date de naissance"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+
+            android:textColorHint="@color/purple"
+            app:layout_constraintBottom_toTopOf="@+id/ville"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+        <EditText
+            android:id="@+id/ville"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_edittext"
+            android:drawableLeft="@drawable/baseline_email_24"
+            android:drawablePadding="8dp"
+            android:hint="Ville"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+
+            android:textColorHint="@color/purple"
+            app:layout_constraintBottom_toTopOf="@+id/nationalite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date" />
+        <EditText
+            android:id="@+id/nationalite"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_edittext"
+            android:drawableLeft="@drawable/baseline_email_24"
+            android:drawablePadding="8dp"
+            android:hint="Nationalité"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+
+            android:textColorHint="@color/purple"
+            app:layout_constraintBottom_toTopOf="@+id/phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ville" />
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/custom_edittext"
+            android:drawableLeft="@drawable/baseline_email_24"
+            android:drawablePadding="8dp"
+            android:hint="Numéro de Téléphone"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
 
             android:textColorHint="@color/purple"
             app:layout_constraintBottom_toTopOf="@+id/buttonLoadCV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/prenom" />
+            app:layout_constraintTop_toBottomOf="@+id/nationalite" />
+
+
 
         <Button
             android:id="@+id/buttonLoadCV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/purple"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
 
             android:text="Charger le CV"
             app:layout_constraintBottom_toTopOf="@+id/buttonLoadLettre"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            app:layout_constraintTop_toBottomOf="@+id/phone" />
 
         <Button
             android:id="@+id/buttonLoadLettre"
@@ -123,22 +224,23 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/purple"
             android:text="Charger la lettre de motivation"
-            app:layout_constraintBottom_toTopOf="@+id/postuler"
+            app:layout_constraintBottom_toTopOf="@+id/btn_candidater"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonLoadCV" />
 
         <Button
-            android:id="@+id/postuler"
+            android:id="@+id/btn_candidater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/purple"
-            android:text="Postuler"
+            android:text="Candidater"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="50dp"
             app:layout_constraintTop_toBottomOf="@+id/buttonLoadLettre" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

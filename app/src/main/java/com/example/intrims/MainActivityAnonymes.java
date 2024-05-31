@@ -2,6 +2,7 @@ package com.example.intrims;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -36,22 +37,13 @@ public class MainActivityAnonymes extends AppCompatActivity {
 
         replaceFragment(new OffreFragment());
 
-        binding.bottomNavigationView.setBackground(null);
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.offre){
-                replaceFragment(new OffreFragment());
-            } else if (item.getItemId() == R.id.profil) {
-                replaceFragment(new ProfilFragment());
 
-            }
-
-            return true;
-        });
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottomDialog();
+                Intent intent = new Intent(MainActivityAnonymes.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }

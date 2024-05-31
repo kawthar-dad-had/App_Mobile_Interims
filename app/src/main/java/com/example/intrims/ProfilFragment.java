@@ -1,5 +1,6 @@
 package com.example.intrims;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,11 @@ public class ProfilFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    TextView nom;
+    TextView ville;
+    TextView date;
+    TextView nationalite;
+    TextView phone;
 
     public ProfilFragment() {
         // Required empty public constructor
@@ -55,10 +63,34 @@ public class ProfilFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_profil, container, false);
+
+        nom = view.findViewById(R.id.nom);
+        ville = view.findViewById(R.id.ville);
+        date = view.findViewById(R.id.date);
+        nationalite = view.findViewById(R.id.nationalite);
+        phone = view.findViewById(R.id.phone);
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
+
+        Candidat candidat = databaseHelper.getCandidatByEmail(LoginActivity.email);
+
+        // Toast.makeText(getContext(), "Candidat"+candidat+LoginActivity.email, Toast.LENGTH_SHORT).show();
+
+        if (candidat != null) {
+            Toast.makeText(getContext(), candidat.getNom(), Toast.LENGTH_SHORT).show();
+
+            nom.setText(candidat.getNom()+ " "+candidat.getPrenom());
+            date.setText(candidat.getDateNaissance());
+            nationalite.setText(candidat.getNationalite());
+            ville.setText(candidat.getVille());
+            phone.setText(candidat.getPhone());
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profil, container, false);
+        return view;
     }
 }

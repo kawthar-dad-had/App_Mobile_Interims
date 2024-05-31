@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -23,9 +25,19 @@ import androidx.fragment.app.Fragment;
 import com.example.intrims.databinding.ActivityMainBinding;
 import com.example.intrims.databinding.ActivityMainEmployeurBinding;
 
-public class MainActivityEmployeur extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+public class MainActivityEmployeur extends AppCompatActivity {
+    DatabaseHelper dbHelper= new DatabaseHelper(MainActivityEmployeur.this);
     ActivityMainEmployeurBinding binding; // Declare binding variable
+    Date currentDate = new Date();
+
+    // Créer un format de date souhaité (par exemple "dd-MM-yyyy")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+    // Formater la date actuelle selon le format souhaité
+    String formattedDate = sdf.format(currentDate);
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -34,15 +46,18 @@ public class MainActivityEmployeur extends AppCompatActivity {
         binding = ActivityMainEmployeurBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        replaceFragment(new OffreFragment());
+        replaceFragment(new OffreEmployeeFragment());
 
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.offre){
-                replaceFragment(new OffreFragment());
+                replaceFragment(new OffreEmployeeFragment());
             } else if (item.getItemId() == R.id.profil) {
                 replaceFragment(new ProfilFragment());
-
+            }else if (item.getItemId() == R.id.candidature) {
+                replaceFragment(new CandidatureEmployeeFragment());
+            }else if (item.getItemId() == R.id.notification) {
+                replaceFragment(new NotificationFragment());
             }
 
             return true;
@@ -66,36 +81,46 @@ public class MainActivityEmployeur extends AppCompatActivity {
     private void showBottomDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.bottomsheetlayout);
+        dialog.setContentView(R.layout.bottomsheetlayout_offre);
 
-        LinearLayout videoLayout = dialog.findViewById(R.id.layoutVideo);
-        LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
-        LinearLayout liveLayout = dialog.findViewById(R.id.layoutLive);
+        Button loginButton = dialog.findViewById(R.id.loginButton);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
+        EditText titre = dialog.findViewById(R.id.titre);
+        EditText subtitle = dialog.findViewById(R.id.subtitle);
+        EditText entreprise = dialog.findViewById(R.id.entreprise);
+        EditText description = dialog.findViewById(R.id.description);
 
-        videoLayout.setOnClickListener(new View.OnClickListener() {
+        entreprise.setHint(dbHelper.getEmployeeByEmail(LoginActivity.email).getEntreprise());
+
+
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
-                Toast.makeText(MainActivityEmployeur.this, "Upload a Video is clicked", Toast.LENGTH_SHORT).show();
+                // Récupérer les valeurs des champs de texte
+                String titreText = titre.getText().toString();
+                String subtitleText = subtitle.getText().toString();
+                String entrepriseText = dbHelper.getEmployeeByEmail(LoginActivity.email).getEntreprise();
+                String dateText = formattedDate;
+                String descriptionText = description.getText().toString();
+
+                Toast.makeText(MainActivityEmployeur.this,dbHelper.getEmployeeByEmail(LoginActivity.email).getEntreprise(), Toast.LENGTH_SHORT).show();
+
+                // Insérer l'offre dans la base de données
+
+                boolean insertionSuccess = dbHelper.insertOffre(titreText, subtitleText, dateText, entrepriseText,LoginActivity.email, descriptionText);
+
+                if (insertionSuccess) {
+                    Toast.makeText(MainActivityEmployeur.this, "Offre insérée avec succès", Toast.LENGTH_SHORT).show();
+                    OffreFragment.offres = dbHelper.getAllOffres();
+                    replaceFragment(new OffreFragment());
+                    dialog.dismiss(); // Fermer le dialog
+                } else {
+                    Toast.makeText(MainActivityEmployeur.this, "Échec de l'insertion de l'offre", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        shortsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Toast.makeText(MainActivityEmployeur.this, "Create a short is Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        liveLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Toast.makeText(MainActivityEmployeur.this, "Go live is Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
